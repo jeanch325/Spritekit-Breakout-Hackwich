@@ -235,6 +235,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     brick.removeFromParent()
                     removedBricks += 1
                     if removedBricks == bricksArray.count {
+                        lives.text = "You win!"
                         print("You win!")
                     }
                     
@@ -259,6 +260,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             numLives = numLives - 1
             lives.text = "Lives: \(numLives)"
             print(numLives)
+            ball.removeFromParent()
+            makeBall()
         }
     }
     
