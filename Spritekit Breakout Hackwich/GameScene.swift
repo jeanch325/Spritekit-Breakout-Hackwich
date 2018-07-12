@@ -17,6 +17,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var loseZone = SKSpriteNode()
     var startButton = SKLabelNode()
     var lives = SKLabelNode()
+    var numLives = 3
     
     
     override func didMove(to view: SKView) {
@@ -69,13 +70,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func makeLivesLabel() {
-        var numLives = 0
         lives.position = CGPoint(x: loseZone.position.x, y: loseZone.position.y)
         lives.text = "Lives: \(numLives)"
         lives.color = .clear
-        lives.fontColor = .white
+        lives.fontColor = .black
         lives.fontSize = 25
         lives.name = "lives"
+        lives.fontName = "Arial"
         
         addChild(lives)
     }
@@ -188,7 +189,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             print("You lose!")
             ball.removeFromParent() //removes ball from game
         }
+        
     }
+    
     
 }
 
