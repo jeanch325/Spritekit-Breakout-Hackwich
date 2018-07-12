@@ -33,12 +33,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         makeLoseZone()
         makeStartButton()
         makeLivesLabel()
-        
-        //ball moves
-        //        if startButton.isHidden == true {
-        //            ball.physicsBody?.isDynamic = true
-        //            ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5)) //dx = x magnitude, dy = y magnitude
-        //        }
+
     }
     
     //Background
@@ -69,19 +64,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         addChild(startButton)
     }
-    
-    //    func makeLivesLabel() {
-    //        numLives = 3
-    //        lives.position = CGPoint(x: loseZone.position.x, y: loseZone.position.y)
-    //        lives.text = "Lives: \(numLives)"
-    //        lives.color = .clear
-    //        lives.fontColor = .black
-    //        lives.fontSize = 25
-    //        lives.name = "lives"
-    //        lives.fontName = "Arial"
-    //
-    //        addChild(lives)
-    //    }
     
     
     func makeBall() {
@@ -213,8 +195,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for startButtonTouch in touches {
             startButton.isHidden = true
             if startButton.isHidden == true {
-                //               ball.physicsBody?.isDynamic = true
-                //                ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5))//dx = x magnitude, dy = y magnitude
+
             }
         }
     }
