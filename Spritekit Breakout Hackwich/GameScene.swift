@@ -13,9 +13,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var ball = SKShapeNode()
     var paddle = SKSpriteNode()
-    var brick = SKSpriteNode()
+    var brick = SKSpriteNode() //make this an array
     var loseZone = SKSpriteNode()
-   
+    var startButton = SKLabelNode()
+    var lives = SKLabelNode()
+    
+    
     override func didMove(to view: SKView) {
         //ball recognizes sides
         physicsWorld.contactDelegate = self
@@ -26,10 +29,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         makePaddle()
         makeBrick()
         makeLoseZone()
+        makeStartButton()
+        makeLivesLabel()
         
         //ball moves
-        ball.physicsBody?.isDynamic = true
-        ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5)) //dx = x magnitude, dy = y magnitude
+        //        if startButton.isHidden == true {
+        //            ball.physicsBody?.isDynamic = true
+        //            ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5)) //dx = x magnitude, dy = y magnitude
+        //        }
     }
     
     //Background
@@ -48,6 +55,31 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             starsBackground.run(moveForever)
         }
     }
+    
+    func makeStartButton () {
+        //startButton = SKLabelNode(color: .clear, size: CGSize(width: frame.width/3, height: 50))
+        startButton.position = CGPoint(x: frame.midX, y: frame.midY)
+        startButton.text = "Tap to Start"
+        startButton.color = .clear
+        startButton.fontColor = .white
+        startButton.fontSize = 40
+        startButton.name = "start button"
+        
+        addChild(startButton)
+    }
+    
+    func makeLivesLabel() {
+        var numLives = 0
+        lives.position = CGPoint(x: loseZone.position.x, y: loseZone.position.y)
+        lives.text = "Lives: \(numLives)"
+        lives.color = .clear
+        lives.fontColor = .white
+        lives.fontSize = 25
+        lives.name = "lives"
+        
+        addChild(lives)
+    }
+    
     
     func makeBall() {
         ball = SKShapeNode(circleOfRadius: 10) //creating ball
@@ -86,6 +118,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(paddle)
     }
     
+    
+    
     func makeBrick() {
         brick = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 50, height: 20))
         brick.position = CGPoint(x: frame.midX, y: frame.maxY - 30)
@@ -94,6 +128,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         brick.physicsBody?.isDynamic = false
         addChild(brick)
     }
+    
+   
     
     func makeLoseZone() {
         loseZone = SKSpriteNode(color: .red, size: CGSize(width: frame.width, height: 50))
@@ -104,11 +140,23 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(loseZone)
     }
     
-    //when you first touch the paddle
+
+    
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        //when you first touch the paddle
         for touch in touches {
             let location = touch.location(in: self)
-            paddle.position.x = location.x //only x so the paddle can't move veritcally
+            paddle.position.x = location.x //only x so the paddle can't move vertically
+        }
+        //start button
+        for startButtonTouch in touches {
+            startButton.isHidden = true
+            if startButton.isHidden == true {
+                ball.physicsBody?.isDynamic = true
+                ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5)) //dx = x magnitude, dy = y magnitude
+            }
+            
         }
     }
     
@@ -117,6 +165,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         for touch in touches {
             let location = touch.location(in: self)
             paddle.position.x = location.x //only x so the paddle can't move veritcally
+        }
+        for startButtonTouch in touches {
+            startButton.isHidden = true
+            if startButton.isHidden == true {
+                //               ball.physicsBody?.isDynamic = true
+                //                ball.physicsBody?.applyImpulse(CGVector(dx: 3, dy: 5))//dx = x magnitude, dy = y magnitude
+            }
         }
     }
     
@@ -134,7 +189,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             ball.removeFromParent() //removes ball from game
         }
     }
- 
+    
 }
 
 
