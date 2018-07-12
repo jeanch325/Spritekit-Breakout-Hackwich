@@ -18,7 +18,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var startButton = SKLabelNode()
     var lives = SKLabelNode()
     var numLives = 3
-    var removedBricks = 0 
+    var removedBricks = 0
+
     
     override func didMove(to view: SKView) {
         //ball recognizes sides
@@ -69,17 +70,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         addChild(startButton)
     }
     
-    func makeLivesLabel() {
-        lives.position = CGPoint(x: loseZone.position.x, y: loseZone.position.y)
-        lives.text = "Lives: \(numLives)"
-        lives.color = .clear
-        lives.fontColor = .black
-        lives.fontSize = 25
-        lives.name = "lives"
-        lives.fontName = "Arial"
-        
-        addChild(lives)
-    }
+    //    func makeLivesLabel() {
+    //        numLives = 3
+    //        lives.position = CGPoint(x: loseZone.position.x, y: loseZone.position.y)
+    //        lives.text = "Lives: \(numLives)"
+    //        lives.color = .clear
+    //        lives.fontColor = .black
+    //        lives.fontSize = 25
+    //        lives.name = "lives"
+    //        lives.fontName = "Arial"
+    //
+    //        addChild(lives)
+    //    }
     
     
     func makeBall() {
@@ -166,7 +168,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bricksArray.append(brick)
             addChild(brick)
         }
-    
+        
         
     }
     
@@ -199,6 +201,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             
         }
+        
     }
     
     //as you keep touching the paddle
@@ -220,7 +223,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     func didBegin(_ contact: SKPhysicsContact) {
         for brick in bricksArray {
             if contact.bodyA.node == brick || contact.bodyB.node == brick {
-                numLives += 1
+                //numLives += 1
                 //call update labels func here
                 if brick.color == .blue {
                     brick.color = .red
@@ -233,24 +236,51 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     removedBricks += 1
                     if removedBricks == bricksArray.count {
                         print("You win!")
+                    }
+                    
                 }
-                
             }
         }
         
-//        if contact.bodyA.node?.name == "brick" ||
-//            contact.bodyB.node?.name == "brick" {
-//
-//
-//            //print("You win!")
-            //bricksArray.removeAll()
-            //ball.removeFromParent() //removes ball from game
-        }
-        if contact.bodyA.node?.name == "loseZone" ||
-            contact.bodyB.node?.name == "loseZone" {
+        //if it hits the losing thing and user only has one life
+        if contact.bodyA.node?.name == "loseZone" &&  numLives == 1 ||
+            contact.bodyB.node?.name == "loseZone" &&  numLives == 1 {
+            lives.text = "You lose"
             print("You lose!")
             ball.removeFromParent() //removes ball from game
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                self.restart()
+            }
+            
         }
+        // if it hits the losing thing and user has 3 or 2 lives
+        if contact.bodyA.node?.name == "loseZone" &&  numLives != 1 ||
+            contact.bodyB.node?.name == "loseZone" &&  numLives != 1 {
+            numLives = numLives - 1
+            lives.text = "Lives: \(numLives)"
+            print(numLives)
+        }
+    }
+    
+    func restart() {
+        makeBrick()
+        numLives = 3
+        lives.text = "Lives: 3"
+        makeBall()
+        
+        
+    }
+    
+    func makeLivesLabel() {
+        lives.position = CGPoint(x: loseZone.position.x, y: loseZone.position.y)
+        lives.text = "Lives: \(numLives)"
+        lives.color = .clear
+        lives.fontColor = .black
+        lives.fontSize = 25
+        lives.name = "lives"
+        lives.fontName = "Arial"
+        
+        addChild(lives)
     }
 }
 
