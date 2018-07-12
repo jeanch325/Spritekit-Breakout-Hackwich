@@ -18,7 +18,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var startButton = SKLabelNode()
     var lives = SKLabelNode()
     var numLives = 3
-    
+    var removedBricks = 0 
     
     override func didMove(to view: SKView) {
         //ball recognizes sides
@@ -123,6 +123,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     
     func makeBrick() {
+        //removing leftover bricks
+        for brick in bricksArray {
+            if brick.parent != nil {
+                brick.removeFromParent()
+            }
+        }
+        bricksArray.removeAll() //clearing array
+        removedBricks = 0
+        
         let bWidth = (frame.width / 5) - 30
         for xIndex in stride(from: frame.minX - (bWidth / 2), to: frame.maxX, by: bWidth + 5) {
             let brick = SKSpriteNode(color: UIColor.blue, size: CGSize(width: 50, height: 20))
@@ -221,18 +230,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 }
                 else {
                     brick.removeFromParent()
-                    //                    removedBricks += 1
-                    //                    if removedBricks == bricksArray.count {
-                    //                        print("You win!")
+                    removedBricks += 1
+                    if removedBricks == bricksArray.count {
+                        print("You win!")
                 }
                 
             }
         }
         
-        if contact.bodyA.node?.name == "brick" ||
-            contact.bodyB.node?.name == "brick" {
-            
-            //print("You win!")
+//        if contact.bodyA.node?.name == "brick" ||
+//            contact.bodyB.node?.name == "brick" {
+//
+//
+//            //print("You win!")
             //bricksArray.removeAll()
             //ball.removeFromParent() //removes ball from game
         }
